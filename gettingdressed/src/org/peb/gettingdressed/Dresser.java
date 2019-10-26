@@ -8,6 +8,7 @@ public class Dresser {
 	private static final String SHIRT = "3";
 	private static final String SHOES = "4";
 	private static final String SOCKS = "5";
+	private static final String LEAVE = "6";
 	
 	private Set<String> state = new HashSet<String>();
 	
@@ -52,6 +53,16 @@ public class Dresser {
 		state.add(SHIRT);
 	}
 
+	private boolean isFullyDressed() {
+		return isPantsOn() && isShirtOn() && isShoesOn() && isSocksOn();
+	}
+	
+	private void leaveHouse() throws DressingOutOfOrderException {
+		if (!isFullyDressed()) {
+			throw new DressingOutOfOrderException("Must be fully dressed before leaving house");
+		}
+	}
+	
 	private void putOnHat() throws DressingOutOfOrderException {
 		if (isShirtOn()) {
 			state.add(HAT);
@@ -81,6 +92,10 @@ public class Dresser {
 			case HAT:
 				putOnHat();
 				return "hat";
+				
+			case LEAVE: 
+				leaveHouse();
+				return "leave";
 		}
 
 		return "Not Implemented";
