@@ -3,7 +3,9 @@ package org.peb.gettingdressed;
 import java.util.*;
 
 public class Dresser {
+	private static final String HAT = "1";
 	private static final String PANTS = "2";
+	private static final String SHIRT = "3";
 	private static final String SHOES = "4";
 	private static final String SOCKS = "5";
 	
@@ -21,6 +23,10 @@ public class Dresser {
 		return state.contains(SOCKS);
 	}
 
+	private boolean isShirtOn() {
+		return state.contains(SHIRT);
+	}
+	
 	private boolean isShoesOn() {
 		return state.contains(SHOES);
 	}
@@ -30,7 +36,7 @@ public class Dresser {
 		if (isSocksOn() && isPantsOn()) {
 			state.add(SHOES);
 		} else {
-			throw new DressingOutOfOrderException("Must put on socks before shoes");
+			throw new DressingOutOfOrderException("Must put on socks and pants before shoes");
 		}
 	}
 
@@ -38,11 +44,22 @@ public class Dresser {
 		state.add(PANTS);
 	}
 	
-	private void putOnSocks()
-	{
+	private void putOnSocks() {
 		state.add(SOCKS);
 	}
 	
+	private void putOnShirt() {
+		state.add(SHIRT);
+	}
+
+	private void putOnHat() throws DressingOutOfOrderException {
+		if (isShirtOn()) {
+			state.add(HAT);
+		} else {
+			throw new DressingOutOfOrderException("Must put on shirt before hat");
+		}
+	}
+
 	private String putOnClothingItem(String item) throws DressingOutOfOrderException {
 		switch (item) {
 			case PANTS: 
@@ -56,6 +73,14 @@ public class Dresser {
 			case SOCKS: 
 				putOnSocks();
 				return "socks";
+				
+			case SHIRT:
+				putOnShirt();
+				return "shirt";
+				
+			case HAT:
+				putOnHat();
+				return "hat";
 		}
 
 		return "Not Implemented";

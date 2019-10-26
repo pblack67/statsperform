@@ -18,4 +18,10 @@ class DresserTest {
 		assertEquals("socks, fail", dresser.getDressed("5 4 2"));
 	}
 
+	@Test
+	void testHatBeforeShirt() {
+		Dresser dresser = new Dresser();
+		assertEquals("socks, pants, shoes, fail", dresser.getDressed("5 2 4 1"));
+	}
+
 }
