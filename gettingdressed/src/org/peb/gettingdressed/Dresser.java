@@ -32,6 +32,10 @@ public class Dresser {
 		return state.contains(SHOES);
 	}
 
+	private boolean isLeftHouse() {
+		return state.contains(LEAVE);
+	}
+	
 	private void putOnShoes() throws DressingOutOfOrderException
 	{
 		if (isSocksOn() && isPantsOn()) {
@@ -58,7 +62,9 @@ public class Dresser {
 	}
 	
 	private void leaveHouse() throws DressingOutOfOrderException {
-		if (!isFullyDressed()) {
+		if (isFullyDressed()) {
+			state.add(LEAVE);
+		} else {
 			throw new DressingOutOfOrderException("Must be fully dressed before leaving house");
 		}
 	}
@@ -103,6 +109,7 @@ public class Dresser {
 	
 	public String getDressed(List<String> input) {
 		boolean firstTime = true;
+		boolean isFailed = false;
 		String commaspace = "";
 		
 		StringBuilder builder = new StringBuilder();
@@ -117,6 +124,12 @@ public class Dresser {
 			}
 		} catch (DressingOutOfOrderException e) {
 			builder.append("fail");
+			isFailed = true;
+		}
+		
+		if (!isLeftHouse() && !isFailed) {
+			builder.append(commaspace);
+			builder.append("fail");
 		}
 		
 		return builder.toString();
@@ -125,6 +138,5 @@ public class Dresser {
 	public String getDressed(String input) {
 		return getDressed(Arrays.asList(input.split(" ")));
 	}
-	
-	
+		
 }

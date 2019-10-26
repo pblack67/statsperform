@@ -35,5 +35,11 @@ class DresserTest {
 		Dresser dresser = new Dresser();
 		assertEquals("pants, shirt, socks, shoes, leave", dresser.getDressed("2 3 5 4 6"));
 	}
-	
+
+	@Test
+	void testNotLeaving() {
+		Dresser dresser = new Dresser();
+		assertEquals("pants, shirt, socks, shoes, fail", dresser.getDressed("2 3 5 4"));
+	}
+
 }
