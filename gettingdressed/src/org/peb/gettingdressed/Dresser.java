@@ -3,8 +3,9 @@ package org.peb.gettingdressed;
 import java.util.*;
 
 public class Dresser {
-	private static String SHOES = "4";
-	private static String SOCKS = "5";
+	private static final String PANTS = "2";
+	private static final String SHOES = "4";
+	private static final String SOCKS = "5";
 	
 	private Set<String> state = new HashSet<String>();
 	
@@ -12,40 +13,68 @@ public class Dresser {
 		super();
 	}
 	
+	private boolean isPantsOn() {
+		return state.contains(PANTS);
+	}
+
 	private boolean isSocksOn() {
 		return state.contains(SOCKS);
 	}
-	
+
+	private boolean isShoesOn() {
+		return state.contains(SHOES);
+	}
+
 	private void putOnShoes() throws DressingOutOfOrderException
 	{
-		if (isSocksOn()) {
+		if (isSocksOn() && isPantsOn()) {
 			state.add(SHOES);
 		} else {
 			throw new DressingOutOfOrderException("Must put on socks before shoes");
 		}
 	}
 
+	private void putOnPants() {
+		state.add(PANTS);
+	}
+	
 	private void putOnSocks()
 	{
 		state.add(SOCKS);
 	}
 	
+	private String putOnClothingItem(String item) throws DressingOutOfOrderException {
+		switch (item) {
+			case PANTS: 
+				putOnPants();
+				return "pants";
+	
+			case SHOES: 
+				putOnShoes();
+				return "shoes";
+	
+			case SOCKS: 
+				putOnSocks();
+				return "socks";
+		}
+
+		return "Not Implemented";
+	}
+	
 	public String getDressed(List<String> input) {
+		boolean firstTime = true;
+		String commaspace = "";
+		
 		StringBuilder builder = new StringBuilder();
 		try {
-		for (String s : input) {
-			switch (s) {
-				case "4": 
-					putOnShoes();
-					builder.append("shoes");
-					break;
-	
-				case "5": 
-					putOnSocks();
-					builder.append("socks");
-					break;
+			for (String s : input) {
+				builder.append(commaspace);
+				builder.append(putOnClothingItem(s));
+				if (firstTime) {
+					firstTime = false;
+					commaspace = ", ";
+				}
 			}
-		}
 		} catch (DressingOutOfOrderException e) {
 			builder.append("fail");
 		}

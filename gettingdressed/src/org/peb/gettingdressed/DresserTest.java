@@ -7,9 +7,15 @@ import org.junit.jupiter.api.Test;
 class DresserTest {
 
 	@Test
-	void testSocksNegative() {
+	void testShoesBeforeSocks() {
 		Dresser dresser = new Dresser();
-		assertEquals("fail", dresser.getDressed("4 5"));
+		assertEquals("pants, fail", dresser.getDressed("2 4 5"));
+	}
+
+	@Test
+	void testShoesBeforePants() {
+		Dresser dresser = new Dresser();
+		assertEquals("socks, fail", dresser.getDressed("5 4 2"));
 	}
 
 }
